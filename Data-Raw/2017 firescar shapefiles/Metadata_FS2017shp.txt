@@ -1,0 +1,104 @@
+General Properties 
+File Identifier A2534698-B602-4F84-B50E-6631468C681E 
+Parent File Identifier 37470057-51E8-49B1-9727-30C7F72AFF09 
+Hierarchy Level dataset 
+Hierarchy Level Name dataset 
+Standard Name ANZLIC Metadata Profile: An Australian/New Zealand Profile of AS/NZS ISO 19115:2005, Geographic information - Metadata 
+Standard Version 1.1 
+Date Stamp 2019-03-28 
+Resource Title North Australian and WA MODIS burnt area mapping by month 2017 - shapefile 
+Format Name *.xml 
+Format Version Unknown 
+Key Dates and Languages 
+Date of creation 2018-02 
+Date of publication 2018-02 
+Date of revision 2019-04
+Metadata Language eng 
+Metadata Character Set utf8 
+Dataset Languages eng  
+Dataset Character Set utf8 
+Abstract Shapefile of fire affected areas in northern Australia and Western Australia for the year 2017 based on NASA’s Moderate Resolution Imaging Spectroradiometer. The data are vector ploygons derived from an image with a resolution of 250m per pixel and each polygon is tagged with a number of attributes including the mapping interval in which the burnt area within the polygon was detected and the month that covers the largest part of the mapping interval. The data extends across the WA rangelands (down to 34.5 degrees S), across the entire NTand northern Qld (down to around 20 degrees S) and across the north of SA down to 29 degrees S. The data also include all fire scars in the high rainfall zone around Townsville and fire scars from January 1st to March 31st across Queensland south of 20S. Mapping landscapes north of 20 degrees S has been validated by aerial and on-ground transects across northern Australia. 
+Purpose Fire Management and Emissions Reporting 
+Metadata Contact Information 
+Name of Individual Name withheld 
+Organisation Name The Darwin Centre for Bushfire Research, Charles Darwin University 
+Position Name  
+Role custodian 
+Voice  
+Facsimile  
+Email Address  
+Address  
+  
+ Australia 
+Resource Contacts 
+Name of Individual Name withheld 
+Organisation Name Charles Darwin University 
+Position Name  
+Role resourceProvider 
+Voice  
+Facsimile  
+Email Address  
+Address Charles Darwin University 
+ Darwin NT 0909 
+ Australia 
+Lineage Statement Burnt area mapping is based on analysis of imagery from the Moderate Resolution Imaging Spectroradiometer on NASA’s Terra satellite. At least two images of different dates are compared to detect fire affected areas. Image analysing software, manual inspection of the image and other datasets such as hotspot data are used to produce the final product. 
+Jurisdictions 
+ Northern Territory 
+ Queensland 
+ South Australia 
+ Western Australia 
+Themes and Categories 
+Topic Category environment 
+Status and Maintenance 
+Status completed 
+Maintenance and Update Frequency notPlanned 
+Date of Next Update  
+Reference system 
+Reference System EPSG::4283
+(Geodetic Datum of Australian 1994) 
+Data Scales/Resolutions 
+Resolution 250 m 
+Spatial Representation Type 
+Spatial Representation Type vector 
+Extent - Geographic Bounding Box 
+North Bounding Latitude -10.55 
+South Bounding Latitude -32.30 
+West Bounding Longitude 113.69 
+East Bounding Longitude 153.09 
+Additional Extents - Geographic 
+Identifier NT 
+Identifier QLD 
+Identifier SA 
+Identifier WA 
+Additional Extent - Temporal 
+From Date/Time 2017-01-01 
+To Date/Time 2017-12-31 
+Distribution Information 
+Distributor 1 
+Distributor 1 Contact 
+Name of Individual Name withheld 
+Organisation Name Charles Darwin University 
+Position Name  
+Role distributor 
+Voice  
+Facsimile  
+Email Address  
+Address Charles Darwin University 
+ Darwin NT 0909 
+ Australia 
+Distributor 1 Format Information 
+Name of the format ESRI shapefile 
+Version of the format N/A 
+Amendment number  
+Specification  
+File decompression technique  
+Distributor 1 Digital Transfer Options Information 
+Units of distribution  
+Transfer size  
+Distributor 1 Online information 
+Linkage www.firenorth.org.au 
+Protocol  
+Application profile  
+Name North Australian Fire Information 
+Description Fire monitoring website for north Australian and remote area fire managers 
+Function download 
