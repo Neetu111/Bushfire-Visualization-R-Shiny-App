@@ -5,6 +5,7 @@ library(sf)
 library(data.table)
 library(ozmaps)
 library(lwgeom)
+library(plotly)
 
 ####-------- Data Preparation
 fire_scar_2017 = read_sf("Data-Raw/2017 firescar shapefiles/fs17_mths_gda.shp") %>%
@@ -41,95 +42,68 @@ ggplot() +
   geom_sf(data = darwin_shape) +
   geom_sf(df_2017, mapping = aes(fill = Update_No))
 
+d = df_2018 %>%
+  select(Update_No, Month)
+
 ggplot() +
   geom_sf(data = darwin_shape) +
-  geom_sf(df_2018, mapping = aes(fill = Update_No))
+  geom_sf(d, mapping = aes(fill = Update_No))
 
 ggplot() +
   geom_sf(data = darwin_shape) +
   geom_sf(df_2019, mapping = aes(fill = Update_No))
 
 
+#######--------- Barchart With Plotly
+df_2017 %>%
+  plot_ly() %>%
+  add_trace(x = ~Month, y = ~Update_No, color = ~Month, type = "bar")
 
-# Code Exp
-df = fire_scar_2017 %>%
-  filter(Region %like% "NT")
+df_2018 %>%
+  plot_ly() %>%
+  add_trace(x = ~Month, y = ~Update_No, color = ~Month, type = "bar")
 
-aus_states <- ozmaps::ozmap_states %>%
-  filter(NAME %in% c("Northern Territory", "Other Territories"))
+df_2019 %>%
+  plot_ly() %>%
+  add_trace(x = ~Month, y = ~Update_No, color = ~Month, type = "bar")
 
-darwin_shape = read_sf("Data-Raw/LandSystems_darwl_250/data/darwl_250_bnd.shp") %>% 
-  view()
-  
-ggplot() +
-  geom_sf(data = darwin_shape)
+#######--------- Barchart With Leaflet
+interval = seq(min(df_2017$Update_No), max(df_2017$Update_No), 30)
+color_palette = colorBin("YlOrBr", domain = df_2017$Update_No, bins = interval)
 
-ggplot() +
-  geom_sf(data = darwin_shape) +
-  geom_sf(data = df, mapping = aes(fill = Update_No))
-  
-  
-# data_darwin_shape <- st_join(df, darwin_shape, left = FALSE, largest = TRUE)
-data_darwin_shape <- st_join(fire_scar_2018, darwin_shape, join = st_intersects)
-  
-ggplot() +
-  geom_sf(data = data_darwin_shape, mapping = aes(fill = Update_no))
+df_2017 %>%
+  leaflet() %>%
+  addTiles() %>%
+  addPolygons(fillColor = ~color_palette(Update_No), weight = 2, 
+              opacity = 1, color = "grey", dashArray = "3", fillOpacity = 0.7,
+              highlight = highlightOptions(weight = 5, color = "#666", 
+                                           dashArray = "", fillOpacity = 0.7,
+                                           bringToFront = TRUE)) %>%
+  addLegend(pal = color_palette, values = ~Update_No, opacity = 0.7, title = NULL,
+            position = "bottomright")
 
+# Different basemap
+get_providers("1.7.0")$providers
+df_2017 %>%
+  leaflet() %>%
+  addProviderTiles(providers$OpenSeaMap) %>%
+  addPolygons(fillColor = ~color_palette(Update_No), weight = 2, 
+              opacity = 1, color = "grey", dashArray = "3", fillOpacity = 0.7,
+              highlight = highlightOptions(weight = 5, color = "#666", 
+                                           dashArray = "", fillOpacity = 0.7,
+                                           bringToFront = TRUE)) %>%
+  addLegend(pal = color_palette, values = ~Update_No, opacity = 0.7, title = NULL,
+            position = "bottomright")
 
-ggplot() +
-  geom_sf(data = darwin_shape) +
-  geom_sf(data = data_darwin_shape, mapping = aes(fill = Update_no))
+basemap
 
-
-
-
-
-
-# 
-# +
-#   geom_sf(darwin_shape)
-# 
-# 
-
-
-
-
-# # Tab 2
-# tabPanel("Hotspot Analysis",
-#          sidebarPanel(
-#            textInput("txt", "Text input:", "text here"),
-#            sliderInput("slider", "Slider input:", 1, 100, 30),
-#            actionButton("action", "Button"),
-#            actionButton("action2", "Button2", class = "btn-primary")
-#          ),
-#          mainPanel(
-#            tabsetPanel(
-#              tabPanel("Fire Scars Data"),
-#              tabPanel("Hotspot")
-#            )
-#          ),
-# )
+options = providerTileOptions
 
 
-# # Sidebar with a slider input for number of bins 
-# sidebarLayout(
-#   sidebarPanel(
-#     sliderInput("bins",
-#                 "Number of bins:",
-#                 min = 1,
-#                 max = 50,
-#                 value = 30)
-#   ),
-
-# # Show a plot of the generated distribution
-# mainPanel(
-#   plotOutput("distPlot")
-# )
-# )
 
 
-# sidebarPanel(
-#   textInput("txt", "Text input:", "text here"),
-#   sliderInput("slider", "Slider input:", 1, 100, 30),
-#   actionButton("action", "Button"),
-#   actionButton("action2", "Button2", class = "btn-primary")
+
+
+
+
+
