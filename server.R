@@ -23,15 +23,15 @@ server <- function(input, output) {
   ###----------  Barcharts Outputs
   output$barchartPlot = renderPlot({
     
-    if (input$year == 2017){
+    if (input$barchart_year == 2017){
       df = df_2017 %>%
         select(Update_No, Month)
     }
-    else if (input$year == 2018){
+    else if (input$barchart_year == 2018){
       df = df_2018 %>%
         select(Update_No, Month)
     }
-    else if (input$year == 2019){
+    else if (input$barchart_year == 2019){
       df = df_2019 %>%
         select(Update_No, Month)
     }
@@ -40,44 +40,37 @@ server <- function(input, output) {
       geom_col()
   })
   
-  ###----------  Map Outputs
-  # observe({
-  #   observeEvent(input$run, {
-  #     if (input$year == 2017){
-  #       output$MapPlot = renderPlot({
-  #         ggplot() +
-  #           geom_sf(data = darwin_shape) +
-  #           geom_sf(data = df_2017, mapping = aes(fill = Update_No))
-  #       }) # Close render plot 2017
-  #     }
-  #     else if (input$year == 2018){
-  #       output$MapPlot = renderPlot({
-  #         ggplot() +
-  #           geom_sf(data = darwin_shape) +
-  #           geom_sf(data = df_2018, mapping = aes(fill = Update_No))
-  #       }) # Close render plot 2018
-  #     }
-  #     else if (input$year == 2019){
-  #       output$MapPlot = renderPlot({
-  #         ggplot() +
-  #           geom_sf(data = darwin_shape) +
-  #           geom_sf(data = df_2019, mapping = aes(fill = Update_No))
-  #       }) # Close render plot 2019
-  #     }
-  #   }) # Close observe event
-  # }) # Close observe
+  ###----------  Plotly BarChart
+  output$PlotlyBarchart = renderPlotly({
+    if (input$plotly_year == "2017"){
+      df = df_2017 %>%
+        select(Update_No, Month) 
+    }
+    else if (input$plotly_year == "2018"){
+      df = df_2018 %>%
+        select(Update_No, Month) 
+    }
+    else if (input$plotly_year == "2019"){
+      df = df_2019 %>%
+        select(Update_No, Month) 
+    }
+    df %>%
+      plot_ly() %>%
+      add_trace(x = ~Month, y = ~Update_No, color = ~Month, type = "bar")
+  })
   
+  ###------------- Map with ggplot()
   output$MapPlot = renderPlot({
 
-    if (input$year == 2017){
+    if (input$ggplot_map_year == 2017){
       df = df_2017 %>%
         select(Update_No, Month)
     }
-    else if (input$year == 2018){
+    else if (input$ggplot_map_year == 2018){
       df = df_2018 %>%
         select(Update_No, Month)
     }
-    else if (input$year == 2019){
+    else if (input$ggplot_map_year == 2019){
       df = df_2019 %>%
         select(Update_No, Month)
     }
@@ -87,42 +80,39 @@ server <- function(input, output) {
       geom_sf(data = df, mapping = aes(fill = Update_No))
   })
   
-  ###----------  Plotly BarChart
-  output$PlotlyBarchart = renderPlotly({
-    if (input$year == "2017"){
-      df = df_2017 %>%
-        select(Update_No, Month) 
-    }
-    else if (input$year == "2018"){
-      df = df_2018 %>%
-        select(Update_No, Month) 
-    }
-    else if (input$year == "2019"){
-      df = df_2019 %>%
-        select(Update_No, Month) 
-    }
-    df %>%
-      plot_ly() %>%
-      add_trace(x = ~Month, y = ~Update_No, color = ~Month, type = "bar")
-  })
-  
   ###----------  LeafletMap
   output$LeafletMap = renderLeaflet({
     
-    interval = seq(min(df_2017$Update_No), max(df_2017$Update_No), 30)
-    color_palette = colorBin(input$colors, domain = df_2017$Update_No, bins = input$range)
+    if (input$leaflet_year == 2017){
+      df = df_2017
+    }
+    else if (input$leaflet_year == 2018){
+      df = df_2018
+    }
+    else if (input$leaflet_year == 2019){
+      df = df_2019
+    }
+    
+    interval = seq(min(input$range), max(input$range), 30)
+    color_palette = colorBin(input$colors, domain = df$Update_No, bins = interval)
     selected_basemap = input$basemap
+    labels = sprintf("Update No: %s <br/> Month: %s <br/> Area(KM Square): %s <br/> Region: %s",
+                     df$Update_No, df$Month, df$AREA_KM2, df$Region) %>% 
+      lapply(htmltools::HTML)
     
     # get_providers("1.7.0")$providers
     
-    df_2017 %>%
+    df %>%
       leaflet() %>%
       addProviderTiles(input$basemap) %>%
       addPolygons(fillColor = ~color_palette(Update_No), weight = 2, 
                   opacity = 1, color = "grey", dashArray = "3", fillOpacity = 0.7,
                   highlight = highlightOptions(weight = 5, color = "#666", 
                                                dashArray = "", fillOpacity = 0.7,
-                                               bringToFront = TRUE)) %>%
+                                               bringToFront = TRUE), 
+                  label = labels, labelOptions = labelOptions(style = list("font-weight" = "normal",
+                                                                           padding = "3px 8px"),
+                                                              textsize = "15px", direction = "auto")) %>%
       addLegend(pal = color_palette, values = ~Update_No, opacity = 0.7, title = NULL,
                 position = "bottomright")
   })

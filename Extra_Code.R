@@ -83,7 +83,13 @@ df_2017 %>%
             position = "bottomright")
 
 # Different basemap
-get_providers("1.7.0")$providers
+# get_providers("1.7.0")$providers  # Get list of providers maps
+
+# Lable = Area, Update No., Month, 
+labels = sprintf("Update No: %s <br/> Month: %s <br/> Area(KM Square): %s <br/> Region: %s",
+                 df_2017$Update_No, df_2017$Month, df_2017$AREA_KM2, df_2017$Region) %>% 
+  lapply(htmltools::HTML)
+  
 df_2017 %>%
   leaflet() %>%
   addProviderTiles(providers$OpenSeaMap) %>%
@@ -91,13 +97,11 @@ df_2017 %>%
               opacity = 1, color = "grey", dashArray = "3", fillOpacity = 0.7,
               highlight = highlightOptions(weight = 5, color = "#666", 
                                            dashArray = "", fillOpacity = 0.7,
-                                           bringToFront = TRUE)) %>%
+                                           bringToFront = TRUE),
+              label = labels, labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                textsize = "15px", direction = "auto")) %>%
   addLegend(pal = color_palette, values = ~Update_No, opacity = 0.7, title = NULL,
             position = "bottomright")
-
-basemap
-
-options = providerTileOptions
 
 
 

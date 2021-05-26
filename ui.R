@@ -31,7 +31,7 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
          tabPanel("Bar Charts",
            sidebarLayout(
              sidebarPanel(
-               radioButtons("year", "Year", c("2017"="2017","2018"="2018", 
+               radioButtons("barchart_year", "Year", c("2017"="2017","2018"="2018", 
                                               "2019" = "2019"))
              ), # Close sidebar panel
              
@@ -43,7 +43,7 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
         tabPanel("Interactive Bar Charts",
                  sidebarLayout(
                    sidebarPanel(
-                     radioButtons("year", "Year", c("2017"="2017","2018"="2018", 
+                     radioButtons("plotly_year", "Year", c("2017"="2017","2018"="2018", 
                                                     "2019" = "2019"))
                    ), # Close sidebar panel
                    
@@ -55,7 +55,7 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
          tabPanel("Map",
                   sidebarLayout(
                     sidebarPanel(
-                      radioButtons("year", "Year", c("2017"=2017,"2018"=2018, 
+                      radioButtons("ggplot_map_year", "Year", c("2017"=2017,"2018"=2018, 
                                                      "2019" = 2019), selected= 2019)
                       # actionButton("run", "Run")
                     ), # Close sidebar panel
@@ -71,6 +71,9 @@ ui <- fluidPage(theme = shinytheme("cosmo"),
           leafletOutput("LeafletMap", height = 800),
           absolutePanel(top = 80, right = 10,
             
+            # Select Year
+            radioButtons("leaflet_year", "Year", c("2017"=2017,"2018"=2018, 
+                                           "2019" = 2019), selected= 2019),
             # Select number of intervals          
             sliderInput("range", "Update Number Values", min(df_2017$Update_No), 
                         max(df_2017$Update_No), value = range(df_2017$Update_No), step = 10
